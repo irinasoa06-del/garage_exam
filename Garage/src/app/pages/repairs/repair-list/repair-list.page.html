@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/cars"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mes Réparations</ion-title>
+  </ion-toolbar>
+  
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="selectedFilter" (ionChange)="filterChanged($event)">
+      <ion-segment-button value="all">
+        <ion-label>Toutes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="en_attente">
+        <ion-label>En attente</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="en_cours">
+        <ion-label>En cours</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="terminee">
+        <ion-label>Terminées</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="filteredReparations.length > 0">
+    <ion-card *ngFor="let reparation of filteredReparations" (click)="voirDetails(reparation)">
+      <ion-card-header>
+        <div class="repair-header">
+          <ion-icon name="construct" size="large" [color]="getStatutColor(reparation.statut)"></ion-icon>
+          <div class="repair-info">
+            <ion-card-title>{{ reparation.type_intervention?.nom }}</ion-card-title>
+            <ion-card-subtitle>
+              {{ reparation.voiture?.marque }} {{ reparation.voiture?.modele }}
+              <ion-button 
+                size="small" 
+                fill="clear" 
+                (click)="voirVoiture(reparation.voiture_id, $event)">
+                <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+              </ion-button>
+            </ion-card-subtitle>
+          </div>
+          <ion-badge [color]="getStatutColor(reparation.statut)">
+            {{ getStatutLabel(reparation.statut) }}
+          </ion-badge>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="repair-details">
+          <div class="detail-item">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ formatDuree(reparation.type_intervention?.duree_secondes || 0) }}</span>
+          </div>
+          <div class="detail-item">
+            <ion-icon name="cash-outline"></ion-icon>
+            <span>{{ reparation.type_intervention?.prix_unitaire }} Ar</span>
+          </div>
+          <div class="detail-item" *ngIf="reparation.slot_garage">
+            <ion-icon name="location-outline"></ion-icon>
+            <span>Slot {{ reparation.slot_garage }}</span>
+          </div>
+        </div>
+
+        <ion-progress-bar 
+          *ngIf="reparation.statut === 'en_cours'"
+          [value]="reparation.progression / 100"
+          [color]="getStatutColor(reparation.statut)">
+        </ion-progress-bar>
+        <p *ngIf="reparation.statut === 'en_cours'" class="progression-text">
+          Progression: {{ reparation.progression }}%
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <div class="empty-state" *ngIf="filteredReparations.length === 0">
+    <ion-icon name="construct-outline" size="large"></ion-icon>
+    <h2>Aucune réparation</h2>
+    <p *ngIf="selectedFilter === 'all'">Vous n'avez pas encore de réparations</p>
+    <p *ngIf="selectedFilter !== 'all'">Aucune réparation {{ getStatutLabel(selectedFilter).toLowerCase() }}</p>
+  </div>
+</ion-content>

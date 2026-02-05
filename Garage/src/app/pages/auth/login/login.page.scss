@@ -1,0 +1,457 @@
+.login-container {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  background-image: url('/assets/images/car-detail-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 20, 30, 0.75);
+    backdrop-filter: blur(3px);
+    z-index: 0;
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    animation: slideInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .logo-section {
+    text-align: center;
+    margin-bottom: 35px;
+    animation: fadeIn 1s ease-out;
+
+    .logo-img {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px;
+      filter: drop-shadow(0 8px 20px rgba(255, 255, 255, 0.15));
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+      &:hover {
+        transform: scale(1.08) translateY(-5px);
+        filter: drop-shadow(0 12px 30px rgba(255, 255, 255, 0.25));
+      }
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      letter-spacing: 2px;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .form-section {
+    animation: fadeIn 1.2s ease-out;
+
+    .form-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(25px) saturate(180%);
+      border-radius: 24px;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 1px 3px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 40px 32px;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 
+          0 12px 40px rgba(0, 0, 0, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2),
+          0 2px 6px rgba(0, 0, 0, 0.25);
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+
+      ion-card-content {
+        padding: 0;
+      }
+
+      ion-item {
+        --background: rgba(255, 255, 255, 0.1);
+        --border-radius: 14px;
+        --padding-start: 20px;
+        --padding-end: 20px;
+        --min-height: 56px;
+        margin-bottom: 18px;
+        border: 1.5px solid rgba(255, 255, 255, 0.18);
+        border-radius: 14px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+          --background: rgba(255, 255, 255, 0.15);
+          border-color: rgba(100, 180, 255, 0.5);
+          box-shadow: 
+            0 4px 15px rgba(100, 180, 255, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          transform: translateX(3px);
+        }
+
+        &.item-has-focus {
+          --background: rgba(255, 255, 255, 0.18);
+          border-color: rgba(100, 180, 255, 0.7);
+          box-shadow: 
+            0 4px 20px rgba(100, 180, 255, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+          transform: translateX(5px);
+        }
+
+        ion-label {
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 14px;
+          font-weight: 500;
+          letter-spacing: 0.3px;
+        }
+
+        ion-input {
+          font-size: 15px;
+          color: #ffffff;
+          --placeholder-color: rgba(255, 255, 255, 0.5);
+          --placeholder-opacity: 1;
+          font-weight: 400;
+          letter-spacing: 0.3px;
+        }
+      }
+
+      .error-message {
+        margin: -12px 0 18px 16px;
+        font-size: 12px;
+        color: #ff6b8a;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+        font-weight: 500;
+        letter-spacing: 0.2px;
+        animation: shake 0.4s ease-in-out;
+      }
+
+      .forgot-password {
+        text-align: right;
+        margin: -8px 0 20px;
+
+        ion-button {
+          font-size: 13px;
+          font-weight: 500;
+          --color: rgba(255, 255, 255, 0.7);
+          letter-spacing: 0.3px;
+          text-transform: none;
+          transition: all 0.3s ease;
+
+          &:hover {
+            --color: rgba(255, 255, 255, 0.95);
+            transform: translateX(-3px);
+          }
+        }
+      }
+
+      .login-button {
+        margin-top: 28px;
+        height: 56px;
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #4a90e2 0%, #357abd 50%, #2563a8 100%);
+        border-radius: 14px;
+        box-shadow: 
+          0 6px 20px rgba(74, 144, 226, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+          transition: left 0.6s ease;
+        }
+
+        &:hover:not(:disabled) {
+          transform: translateY(-3px);
+          box-shadow: 
+            0 10px 35px rgba(74, 144, 226, 0.55),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+          background: linear-gradient(135deg, #5a9de8 0%, #4282c9 50%, #2f6eb5 100%);
+
+          &::before {
+            left: 100%;
+          }
+        }
+
+        &:active:not(:disabled) {
+          transform: translateY(-1px);
+          box-shadow: 
+            0 6px 25px rgba(74, 144, 226, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          background: linear-gradient(135deg, #666 0%, #555 100%);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+      }
+
+      .register-link {
+        text-align: center;
+        margin-top: 28px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+        p {
+          color: rgba(255, 255, 255, 0.75);
+          font-size: 14px;
+          margin-bottom: 14px;
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+          letter-spacing: 0.3px;
+        }
+
+        ion-button {
+          font-size: 14px;
+          font-weight: 600;
+          --color: rgba(255, 255, 255, 0.85);
+          --border-color: rgba(255, 255, 255, 0.3);
+          --border-width: 1.5px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          height: 48px;
+          border-radius: 12px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+          &:hover {
+            --color: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.6);
+            --background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .login-container {
+    padding: 15px;
+
+    .content-wrapper {
+      max-width: 100%;
+    }
+
+    .logo-section {
+      margin-bottom: 28px;
+
+      .logo-img {
+        width: 85px;
+        height: 85px;
+        margin-bottom: 16px;
+      }
+
+      h1 {
+        font-size: 30px;
+        letter-spacing: 1.5px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
+
+    .form-section .form-card {
+      padding: 32px 24px;
+
+      ion-item {
+        --min-height: 52px;
+        --padding-start: 18px;
+        --padding-end: 18px;
+        margin-bottom: 16px;
+      }
+
+      .login-button {
+        height: 52px;
+        font-size: 15px;
+      }
+
+      .register-link {
+        ion-button {
+          height: 46px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 12px;
+
+    .logo-section {
+      margin-bottom: 24px;
+
+      .logo-img {
+        width: 75px;
+        height: 75px;
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        font-size: 26px;
+        letter-spacing: 1px;
+      }
+
+      p {
+        font-size: 13px;
+      }
+    }
+
+    .form-section .form-card {
+      padding: 28px 20px;
+      border-radius: 20px;
+
+      ion-item {
+        --min-height: 50px;
+        --padding-start: 16px;
+        --padding-end: 16px;
+        margin-bottom: 14px;
+        border-radius: 12px;
+
+        ion-label {
+          font-size: 13px;
+        }
+
+        ion-input {
+          font-size: 14px;
+        }
+      }
+
+      .error-message {
+        margin: -10px 0 14px 14px;
+        font-size: 11px;
+      }
+
+      .login-button {
+        height: 50px;
+        font-size: 14px;
+        margin-top: 24px;
+      }
+
+      .register-link {
+        margin-top: 24px;
+        padding-top: 20px;
+
+        p {
+          font-size: 13px;
+          margin-bottom: 12px;
+        }
+
+        ion-button {
+          height: 44px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .login-container {
+    .form-section .form-card {
+      padding: 24px 16px;
+
+      ion-item {
+        --min-height: 48px;
+        --padding-start: 14px;
+        --padding-end: 14px;
+      }
+    }
+  }
+}
+
+// Support pour les écrans très hauts
+@media (min-height: 900px) {
+  .login-container {
+    .logo-section {
+      margin-bottom: 45px;
+
+      .logo-img {
+        width: 120px;
+        height: 120px;
+      }
+    }
+
+    .form-section .form-card {
+      padding: 45px 35px;
+    }
+  }
+}

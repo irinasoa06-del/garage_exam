@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/cars"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Profil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="profile-header">
+    <ion-avatar>
+      <ion-icon name="person" size="large"></ion-icon>
+    </ion-avatar>
+    <h2 *ngIf="user">{{ user.prenom }} {{ user.nom }}</h2>
+    <p *ngIf="user">{{ user.email }}</p>
+  </div>
+
+  <!-- Informations personnelles -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Informations personnelles</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <h3>Nom complet</h3>
+            <p *ngIf="user">{{ user.prenom }} {{ user.nom }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h3>Email</h3>
+            <p *ngIf="user">{{ user.email }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="user?.telephone">
+          <ion-label>
+            <h3>Téléphone</h3>
+            <p>{{ user?.telephone }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="user?.adresse">
+          <ion-label>
+            <h3>Adresse</h3>
+            <p>{{ user?.adresse }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="user?.date_inscription">
+          <ion-label>
+            <h3>Membre depuis</h3>
+            <p>{{ user?.date_inscription | date:'dd/MM/yyyy' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-button expand="block" fill="outline" (click)="modifierProfil()">
+        <ion-icon slot="start" name="create"></ion-icon>
+        Modifier le profil
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Actions rapides -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Actions rapides</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item button (click)="voirVoitures()">
+          <ion-icon slot="start" name="car-sport" color="primary"></ion-icon>
+          <ion-label>Mes voitures</ion-label>
+          <ion-icon slot="end" name="chevron-forward"></ion-icon>
+        </ion-item>
+
+        <ion-item button (click)="voirHistorique()">
+          <ion-icon slot="start" name="time" color="primary"></ion-icon>
+          <ion-label>Historique réparations</ion-label>
+          <ion-icon slot="end" name="chevron-forward"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Paramètres -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Paramètres</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item button (click)="aide()">
+          <ion-icon slot="start" name="help-circle" color="medium"></ion-icon>
+          <ion-label>Aide</ion-label>
+          <ion-icon slot="end" name="chevron-forward"></ion-icon>
+        </ion-item>
+
+        <ion-item button (click)="aPropos()">
+          <ion-icon slot="start" name="information-circle" color="medium"></ion-icon>
+          <ion-label>À propos</ion-label>
+          <ion-icon slot="end" name="chevron-forward"></ion-icon>
+        </ion-item>
+
+        <ion-item button (click)="deconnexion()" lines="none">
+          <ion-icon slot="start" name="log-out" color="danger"></ion-icon>
+          <ion-label color="danger">Déconnexion</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

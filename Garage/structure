@@ -1,0 +1,127 @@
+garage-mobile/
+├── src/
+│   ├── app/
+│   │   ├── core/
+│   │   │   ├── guards/
+│   │   │   │   ├── auth.guard.ts
+│   │   │   │   └── guest.guard.ts
+│   │   │   ├── interceptors/
+│   │   │   │   └── auth.interceptor.ts
+│   │   │   ├── services/
+│   │   │   │   ├── auth.service.ts ok 
+│   │   │   │   ├── api.service.ts
+│   │   │   │   ├── car.service.ts
+│   │   │   │   ├── repair.service.ts
+│   │   │   │   └── notification.service.ts
+│   │   │   └── models/
+│   │   │       ├── user.model.ts
+│   │   │       ├── car.model.ts
+│   │   │       ├── repair.model.ts
+│   │   │       └── repair-type.model.ts
+│   │   ├── pages/
+│   │   │   ├── auth/
+│   │   │   │   ├── login/
+│   │   │   │   │   ├── login.page.ts OK
+│   │   │   │   │   ├── login.page.html OK
+│   │   │   │   │   ├── login.page.scss OK
+│   │   │   │   │   └── login.module.ts OK
+│   │   │   │   └── register/
+│   │   │   │       ├── register.page.ts
+│   │   │   │       ├── register.page.html
+│   │   │   │       ├── register.page.scss
+│   │   │   │       └── register.module.ts
+│   │   │   ├── cars/
+│   │   │   │   ├── car-list/
+│   │   │   │   │   ├── car-list.page.ts
+│   │   │   │   │   ├── car-list.page.html
+│   │   │   │   │   ├── car-list.page.scss
+│   │   │   │   │   └── car-list.module.ts
+│   │   │   │   ├── car-detail/
+│   │   │   │   │   ├── car-detail.page.ts
+│   │   │   │   │   ├── car-detail.page.html
+│   │   │   │   │   ├── car-detail.page.scss
+│   │   │   │   │   └── car-detail.module.ts
+│   │   │   │   └── car-add/
+│   │   │   │       ├── car-add.page.ts
+│   │   │   │       ├── car-add.page.html
+│   │   │   │       ├── car-add.page.scss
+│   │   │   │       └── car-add.module.ts
+│   │   │   ├── repairs/
+│   │   │   │   ├── repair-list/
+│   │   │   │   │   ├── repair-list.page.ts
+│   │   │   │   │   ├── repair-list.page.html
+│   │   │   │   │   ├── repair-list.page.scss
+│   │   │   │   │   └── repair-list.module.ts
+│   │   │   │   ├── repair-detail/
+│   │   │   │   │   ├── repair-detail.page.ts
+│   │   │   │   │   ├── repair-detail.page.html
+│   │   │   │   │   ├── repair-detail.page.scss
+│   │   │   │   │   └── repair-detail.module.ts
+│   │   │   │   └── repair-payment/
+│   │   │   │       ├── repair-payment.page.ts
+│   │   │   │       ├── repair-payment.page.html
+│   │   │   │       ├── repair-payment.page.scss
+│   │   │   │       └── repair-payment.module.ts
+│   │   │   ├── profile/
+│   │   │   │   ├── profile.page.ts
+│   │   │   │   ├── profile.page.html
+│   │   │   │   ├── profile.page.scss
+│   │   │   │   └── profile.module.ts
+│   │   │   └── notifications/
+│   │   │       ├── notifications.page.ts
+│   │   │       ├── notifications.page.html
+│   │   │       ├── notifications.page.scss
+│   │   │       └── notifications.module.ts
+│   │   ├── shared/
+│   │   │   ├── components/
+│   │   │   │   ├── header/
+│   │   │   │   │   ├── header.component.ts
+│   │   │   │   │   ├── header.component.html
+│   │   │   │   │   └── header.component.scss
+│   │   │   │   ├── footer/
+│   │   │   │   │   ├── footer.component.ts
+│   │   │   │   │   ├── footer.component.html
+│   │   │   │   │   └── footer.component.scss
+│   │   │   │   ├── car-card/
+│   │   │   │   │   ├── car-card.component.ts
+│   │   │   │   │   ├── car-card.component.html
+│   │   │   │   │   └── car-card.component.scss
+│   │   │   │   └── repair-card/
+│   │   │   │       ├── repair-card.component.ts
+│   │   │   │       ├── repair-card.component.html
+│   │   │   │       └── repair-card.component.scss
+│   │   │   └── directives/
+│   │   │       └── form-validation.directive.ts
+│   │   ├── app-routing.module.ts
+│   │   ├── app.component.ts
+│   │   ├── app.component.html
+│   │   ├── app.component.scss
+│   │   └── app.module.ts
+│   ├── assets/
+│   │   ├── icons/
+│   │   ├── images/
+│   │   └── fonts/
+│   ├── environments/
+│   │   ├── environment.ts
+│   │   └── environment.prod.ts
+│   ├── theme/
+│   │   └── variables.scss
+│   └── index.html
+├── angular.json
+├── capacitor.config.ts
+├── ionic.config.json
+├── package.json ok
+├── tsconfig.json
+└── README.md
+
+
+┌─────────────┐     API REST     ┌─────────────┐     Firebase     ┌─────────────┐
+│   MOBILE    │◄────────────────►│   BACKEND   │◄────────────────►│     JEU     │
+│  (Ionic)    │   Laravel + DB   │  (Laravel)  │   Temps réel     │   (Godot)   │
+└─────────────┘                  └─────────────┘                  └─────────────┘
+        │                                │                                │
+        ▼                                ▼                                ▼
+┌─────────────┐                  ┌─────────────┐                  ┌─────────────┐
+│   Clients   │                  │    Admin    │                  │ Mécaniciens │
+│ Utilisateurs│                  │   Web App   │                  │  (Joueurs)  │
+└─────────────┘                  └─────────────┘                  └─────────────┘

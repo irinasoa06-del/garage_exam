@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mes Voitures</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToNotifications()">
+        <ion-icon name="notifications-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="goToProfile()">
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Statistiques -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <ion-icon name="time-outline" color="warning"></ion-icon>
+      <div class="stat-value">{{ statsEnAttente }}</div>
+      <div class="stat-label">En attente</div>
+    </div>
+    <div class="stat-card">
+      <ion-icon name="construct-outline" color="primary"></ion-icon>
+      <div class="stat-value">{{ statsEnReparation }}</div>
+      <div class="stat-label">En réparation</div>
+    </div>
+    <div class="stat-card">
+      <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+      <div class="stat-value">{{ statsPrete }}</div>
+      <div class="stat-label">Prêtes</div>
+    </div>
+  </div>
+
+  <!-- Liste des voitures -->
+  <div class="content-container">
+    <ion-list *ngIf="voitures.length > 0">
+      <ion-item-sliding *ngFor="let voiture of voitures">
+        <ion-item button (click)="voirDetails(voiture)">
+          <ion-avatar slot="start">
+            <ion-icon name="car-sport" size="large"></ion-icon>
+          </ion-avatar>
+          
+          <ion-label>
+            <h2>{{ voiture.marque }} {{ voiture.modele }}</h2>
+            <p>{{ voiture.immatriculation }}</p>
+            <p *ngIf="voiture.annee">{{ voiture.annee }}</p>
+          </ion-label>
+
+          <ion-badge slot="end" [color]="getStatutColor(voiture.statut)">
+            {{ getStatutLabel(voiture.statut) }}
+          </ion-badge>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="supprimerVoiture(voiture, $event)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <!-- Message si aucune voiture -->
+    <div class="empty-state" *ngIf="voitures.length === 0 && !isLoading">
+      <ion-icon name="car-sport-outline" size="large"></ion-icon>
+      <h2>Aucune voiture</h2>
+      <p>Ajoutez votre première voiture pour commencer</p>
+    </div>
+  </div>
+
+  <!-- Bouton flottant pour ajouter -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="ajouterVoiture()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

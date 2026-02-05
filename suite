@@ -1,0 +1,54 @@
+1. Backend (Laravel)
+ Configuration Firebase
+Créer config/firebase.php avec les clés d’API (à ne pas versionner).
+Documenter les variables d’environnement requises dans 
+.env
+.
+Exemple : FIREBASE_CREDENTIALS=/chemin/vers/cle-firebase.json.
+ Tests automatisés
+Implémenter des tests PHPUnit pour les contrôleurs critiques :
+AuthController
+ (login/register).
+VoitureController
+ (CRUD voitures).
+ReparationController (suivi des réparations).
+ Documentation API
+Générer une documentation OpenAPI/Swagger.
+Lister les endpoints avec exemples de requêtes/réponses.
+2. Application Mobile (Ionic/Angular)
+ Configuration d’environnement
+Vérifier que src/environnements/environment.ts contient les bonnes URLs d’API.
+Ajouter la configuration Firebase pour les notifications push.
+ Tests
+Tester les services (auth.service.ts, api.service.ts) avec Jasmine/Karma.
+Ajouter des tests e2e avec Cypress ou Appium.
+ Optimisation
+Mettre en place le lazy loading pour les modules.
+Vérifier la gestion des erreurs réseau (intercepteurs).
+3. Frontend Web (Vue.js)
+ Initialisation du projet
+Créer la structure de dossiers (composants, vues, services).
+Configurer le routeur Vue Router.
+ Intégration API
+Implémenter les appels API vers le backend.
+Gérer l’authentification (stockage du token JWT).
+ Tests et qualité
+Ajouter Vitest pour les tests unitaires.
+Configurer ESLint/Prettier.
+4. Déploiement
+ Backend
+Configurer un serveur de production (ex: Nginx + PHP-FPM).
+Mettre en place un certificat SSL (Let’s Encrypt).
+ Frontend
+Configurer un build de production (npm run build).
+Déployer sur un hébergeur statique (Netlify, Vercel, ou un sous-dossier Laravel).
+ Mobile
+Générer les builds Android/iOS avec Capacitor.
+Soumettre aux stores (Google Play/App Store).
+5. Documentation finale
+ README
+Mettre à jour les instructions d’installation/déploiement.
+Ajouter des captures d’écran.
+ Manuel utilisateur
+Rédiger un guide utilisateur pour l’app mobile et le dashboard web.
+Expliquer les fonctionnalités clés.

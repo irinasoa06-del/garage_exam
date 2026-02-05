@@ -1,0 +1,106 @@
+.car-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  ion-icon {
+    font-size: 48px;
+  }
+
+  div {
+    flex: 1;
+  }
+}
+
+.car-info {
+  margin-top: 16px;
+
+  .info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ion-color-light);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .label {
+      color: var(--ion-color-medium);
+      font-weight: 500;
+    }
+
+    .value {
+      font-weight: 600;
+    }
+  }
+}
+
+.price {
+  color: var(--ion-color-primary);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.reparation-status {
+  text-align: right;
+  min-width: 100px;
+
+  ion-progress-bar {
+    margin-top: 8px;
+  }
+
+  .progression-text {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+    margin-top: 4px;
+  }
+}
+
+.total-section {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 2px solid var(--ion-color-light);
+
+  .total-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: bold;
+
+    .total-amount {
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+.action-buttons {
+  padding: 16px;
+
+  ion-button {
+    font-weight: 600;
+    height: 48px;
+  }
+}
+
+.status-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+
+  ion-icon {
+    font-size: 32px;
+  }
+
+  p {
+    margin: 0;
+    flex: 1;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  color: var(--ion-color-medium);
+}

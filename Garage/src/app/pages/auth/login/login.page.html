@@ -1,0 +1,48 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <div class="logo-section">
+      <ion-img src="/assets/images/logo.png" alt="Garage Logo"></ion-img>
+      <h1>Mon Garage</h1>
+      <p>Connectez-vous pour gérer vos réparations</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="form-section">
+      <ion-item lines="full">
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" formControlName="email" required></ion-input>
+      </ion-item>
+      
+      <div class="error-message" *ngIf="errorControl['email'].touched && errorControl['email'].errors">
+        <span *ngIf="errorControl['email'].errors['required']">L'email est requis</span>
+        <span *ngIf="errorControl['email'].errors['email']">Format d'email invalide</span>
+      </div>
+
+      <ion-item lines="full">
+        <ion-label position="floating">Mot de passe</ion-label>
+        <ion-input type="password" formControlName="password" required></ion-input>
+      </ion-item>
+      
+      <div class="error-message" *ngIf="errorControl['password'].touched && errorControl['password'].errors">
+        <span *ngIf="errorControl['password'].errors['required']">Le mot de passe est requis</span>
+        <span *ngIf="errorControl['password'].errors['minlength']">Minimum 6 caractères</span>
+      </div>
+
+      <div class="forgot-password">
+        <ion-button fill="clear" size="small" (click)="forgotPassword()">
+          Mot de passe oublié ?
+        </ion-button>
+      </div>
+
+      <ion-button expand="block" type="submit" [disabled]="loginForm.invalid" class="login-button">
+        Se connecter
+      </ion-button>
+
+      <div class="register-link">
+        <p>Pas encore de compte ?</p>
+        <ion-button expand="block" fill="outline" (click)="goToRegister()">
+          Créer un compte
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

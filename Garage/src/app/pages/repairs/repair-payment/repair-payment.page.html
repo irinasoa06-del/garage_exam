@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/cars/' + voitureId"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Paiement</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="voiture">
+    <!-- Carte véhicule -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="car-sport"></ion-icon>
+          {{ voiture.marque }} {{ voiture.modele }}
+        </ion-card-title>
+        <ion-card-subtitle>{{ voiture.immatriculation }}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <!-- Liste des réparations -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Réparations effectuées</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let reparation of reparations">
+            <ion-label>
+              <h3>{{ reparation.type_intervention?.nom }}</h3>
+              <p>{{ reparation.type_intervention?.description }}</p>
+            </ion-label>
+            <ion-note slot="end" color="primary">
+              {{ reparation.type_intervention?.prix_unitaire }} Ar
+            </ion-note>
+          </ion-item>
+        </ion-list>
+
+        <!-- Total -->
+        <div class="total-section">
+          <span class="total-label">Total à payer:</span>
+          <span class="total-amount">{{ montantTotal }} Ar</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Formulaire de paiement -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Mode de paiement</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="paymentForm">
+          <ion-radio-group formControlName="mode_paiement">
+            <ion-item *ngFor="let mode of modesPaiement">
+              <ion-label>{{ mode.label }}</ion-label>
+              <ion-radio slot="start" [value]="mode.value"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Note importante -->
+    <ion-card color="warning">
+      <ion-card-content>
+        <div class="warning-message">
+          <ion-icon name="information-circle"></ion-icon>
+          <p>Après paiement, votre véhicule sera prêt à être récupéré. Le slot garage sera libéré.</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Boutons d'action -->
+    <div class="action-buttons">
+      <ion-button expand="block" fill="outline" (click)="annuler()">
+        Annuler
+      </ion-button>
+      <ion-button 
+        expand="block" 
+        color="success" 
+        (click)="confirmerPaiement()"
+        [disabled]="paymentForm.invalid">
+        <ion-icon slot="start" name="card"></ion-icon>
+        Payer {{ montantTotal }} Ar
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

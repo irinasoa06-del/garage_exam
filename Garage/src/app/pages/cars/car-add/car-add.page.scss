@@ -1,0 +1,41 @@
+ion-list-header {
+  padding-top: 20px;
+  
+  ion-label {
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+ion-item {
+  margin-bottom: 10px;
+
+  .price {
+    color: var(--ion-color-primary);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+}
+
+.total-estimation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+
+  .amount {
+    color: var(--ion-color-primary);
+    font-size: 24px;
+  }
+}
+
+.buttons-container {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+
+  ion-button {
+    flex: 1;
+  }
+}
