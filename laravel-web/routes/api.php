@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\CommandeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\TypeInterventionController; // Add import
 use App\Http\Controllers\Api\StatistiqueController;
+use App\Http\Controllers\Api\ClientController;
 
 /* Route::get('/test', [TestController::class, 'test']);
 |--------------------------------------------------------------------------
@@ -40,6 +41,10 @@ Route::prefix('v1')->group(function () {
     Route::put('reparations/{reparation}/progression', [ReparationController::class, 'updateProgression']);
     Route::post('reparations/{reparation}/terminer', [ReparationController::class, 'terminer']);
     Route::get('reparations/slots', [ReparationController::class, 'slotsDisponibles']);
+
+    Route::get('clients', [ClientController::class, 'index']);
+    Route::get('clients/{id}', [ClientController::class, 'show']);
+    Route::get('clients/{id}/repair-history', [ClientController::class, 'repairHistory']);
 
     Route::get('interventions', [InterventionController::class, 'index']);
     Route::post('voitures/{voiture}/interventions', [InterventionController::class, 'storeForVoiture']);

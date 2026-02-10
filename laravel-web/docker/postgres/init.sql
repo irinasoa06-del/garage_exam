@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS reparations_en_cours (
     reparation_id SERIAL PRIMARY KEY,
     voiture_id INT NOT NULL,
     type_id INT NOT NULL,
-    slot_garage INT CHECK (slot_garage IN (1, 2)),
+    slot_garage INT CHECK (slot_garage IN (1, 2, 3)),
     date_debut TIMESTAMP,
     date_fin_estimee TIMESTAMP,
     statut VARCHAR(50) DEFAULT 'en_attente' 

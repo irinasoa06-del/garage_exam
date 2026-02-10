@@ -266,6 +266,31 @@ function logout() {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  padding: 2.5rem;
+  background: var(--primary-gradient);
+  border-radius: var(--radius-xl);
+  color: white;
+  box-shadow: 0 10px 40px rgba(24, 103, 132, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+}
+
+.page-header h1 {
+  color: white;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
 }
 
 .stats-grid { 
@@ -278,20 +303,64 @@ function logout() {
 .stat-card {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(12, 46, 61, 0.95) 0%, rgba(24, 103, 132, 0.8) 100%);
+  border: 2px solid rgba(24, 103, 132, 0.4);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: var(--primary-gradient);
+  opacity: 0.2;
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-xl), var(--shadow-glow);
+  transform: translateY(-4px);
 }
 
 .stat-card h3 {
   font-size: 0.875rem;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .number { 
-  font-size: 2.25rem; 
-  font-weight: 700; 
-  color: var(--text-main); 
+  font-size: 2.5rem; 
+  font-weight: 800; 
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip:text;
+}
+
+.table-container {
+  overflow: hidden;
+}
+
+.table-container > div:first-child {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+table tbody tr {
+  transition: var(--transition);
+}
+
+table tbody tr:hover {
+  transform: scale(1.01);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 /* Modal specific overrides */
@@ -301,8 +370,8 @@ function logout() {
   left: 0; 
   width: 100%; 
   height: 100%; 
-  background: rgba(0,0,0,0.5); 
-  backdrop-filter: blur(2px);
+  background: rgba(15, 23, 42, 0.6); 
+  backdrop-filter: blur(4px);
   display: flex; 
   justify-content: center; 
   align-items: center; 
@@ -312,12 +381,21 @@ function logout() {
 
 .modal-content { 
   background: var(--bg-surface); 
-  padding: 2rem; 
-  border-radius: var(--radius-lg); 
+  padding: 2.5rem; 
+  border-radius: var(--radius-xl); 
   width: 500px; 
   max-width: 90%; 
-  box-shadow: var(--shadow-lg);
-  animation: slideIn 0.2s;
+  box-shadow: var(--shadow-xl);
+  animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid var(--border-color);
+}
+
+.modal-content h2 {
+  margin: 0 0 1.5rem 0;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .modal-actions {
@@ -325,6 +403,10 @@ function logout() {
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 2rem;
+}
+
+.modal-actions .btn {
+  min-width: 100px;
 }
 
 .progress-bar { 
@@ -345,6 +427,25 @@ function logout() {
   transition: width 0.3s ease; 
 }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeIn { 
+  from { opacity: 0; } 
+  to { opacity: 1; } 
+}
+
+@keyframes scaleIn { 
+  from { 
+    transform: scale(0.9);
+    opacity: 0; 
+  } 
+  to { 
+    transform: scale(1);
+    opacity: 1; 
+  } 
+}
+
+/* Action buttons in table */
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+}
 </style>

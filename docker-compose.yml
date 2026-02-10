@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: garage-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: garage_auto
+      POSTGRES_USER: garage_user
+      POSTGRES_PASSWORD: garage_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./laravel-web/docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - garage-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U garage_user -d garage_auto"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Laravel (API)
+  laravel:
+    build: ./laravel-web
+    image: garage-laravel
+    container_name: garage-laravel
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: garage_auto
+      DB_USERNAME: garage_user
+      DB_PASSWORD: garage_password
+    volumes:
+      - ./laravel-web:/var/www/html
+    ports:
+      - "8000:8000"
+    networks:
+      - garage-network
+    command: sh -c "composer install && php artisan migrate --force && php artisan db:seed --force && php -S 0.0.0.0:8000 -t public"
+
+  # Frontend Vue.js
+  frontend:
+    build: ./garage-web-front
+    image: garage-frontend
+    container_name: garage-frontend
+    restart: unless-stopped
+    depends_on:
+      - laravel
+    volumes:
+      - ./garage-web-front/vue-project:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - garage-network
+    command: npm run dev -- --host 0.0.0.0
+
+networks:
+  garage-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

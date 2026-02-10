@@ -16,6 +16,11 @@ const router = createRouter({
             component: LoginView
         },
         {
+            path: '/client/:id/history',
+            name: 'client-history',
+            component: () => import('../views/Public/ClientHistoryView.vue')
+        },
+        {
             path: '/admin',
             name: 'admin',
             redirect: '/admin/dashboard',

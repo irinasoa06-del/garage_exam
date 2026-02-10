@@ -187,7 +187,7 @@ if (-not $SkipWeb) {
     Write-Host "- Frontend web : http://localhost:5173" -ForegroundColor Gray
 }
 if (-not $SkipMobile) {
-    Write-Host "- Application mobile : http://localhost:8100" -ForegroundColor Gray
+    Write-Host "- Application mobile : http://localhost:4200" -ForegroundColor Gray
 }
 
 Write-Host "Pour arreter les conteneurs : docker compose -f laravel-web/docker-compose-image.yml down" -ForegroundColor DarkGray

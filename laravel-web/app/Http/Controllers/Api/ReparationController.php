@@ -136,15 +136,16 @@ class ReparationController extends Controller
             return response()->json(['message' => 'Réparation déjà commencée ou terminée'], 400);
         }
 
-        // Vérifier slots disponibles (Max 2)
+        // Vérifier slots disponibles (Max 3)
         $slotsOccupes = ReparationEnCours::where('statut', 'en_cours')->count();
-        if ($slotsOccupes >= 2) {
-             return response()->json(['message' => 'Garage complet (2/2 slots occupés)'], 400);
+        if ($slotsOccupes >= 3) {
+             return response()->json(['message' => 'Garage complet (3/3 slots occupés)'], 400);
         }
 
-        // Trouver le slot libre (1 ou 2)
+        // Trouver le slot libre (1, 2 ou 3)
         $slot1 = ReparationEnCours::where('statut', 'en_cours')->where('slot_garage', 1)->exists();
-        $slot = $slot1 ? 2 : 1;
+        $slot2 = ReparationEnCours::where('statut', 'en_cours')->where('slot_garage', 2)->exists();
+        $slot = !$slot1 ? 1 : (!$slot2 ? 2 : 3);
 
         $reparation->update([
             'statut' => 'en_cours',
@@ -202,6 +203,6 @@ class ReparationController extends Controller
      */
     public function slotsDisponibles() {
         $slotsOccupes = ReparationEnCours::where('statut', 'en_cours')->count();
-        return response()->json(['disponibles' => 2 - $slotsOccupes]);
+        return response()->json(['disponibles' => 3 - $slotsOccupes]);
     }
 }

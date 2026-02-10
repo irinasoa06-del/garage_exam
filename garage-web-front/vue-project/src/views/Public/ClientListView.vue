@@ -17,28 +17,29 @@
         </div>
         
         <div v-else class="clients-grid">
-          <div v-for="client in clients" :key="client.id" class="card client-card">
+          <div v-for="client in clients" :key="client.user_id" 
+               class="card client-card"
+               @click="viewClientHistory(client.user_id)"
+               style="cursor: pointer;">
             <div class="card-header justify-between items-center mb-4">
-               <h3>{{ client.nom }}</h3>
-               <span :class="['badge', client.statut === 'terminee' ? 'success' : 'warning']">
-                 {{ client.statut === 'terminee' ? 'Terminé' : 'En cours' }}
-               </span>
+               <h3>{{ client.nom }} {{ client.prenom }}</h3>
             </div>
             <div class="details">
               <div class="detail-row">
-                 <span class="label">Véhicule :</span>
-                 <span class="value">{{ client.voiture }}</span>
+                 <span class="label">Email :</span>
+                 <span class="value">{{ client.email }}</span>
               </div>
               <div class="detail-row">
-                 <span class="label">Intervention :</span>
-                 <span class="value">{{ client.typeIntervention }}</span>
+                 <span class="label">Téléphone :</span>
+                 <span class="value">{{ client.telephone || '-' }}</span>
+              </div>
+              <div class="detail-row">
+                 <span class="label">Voitures :</span>
+                 <span class="value">{{ client.voitures?.length || 0 }}</span>
               </div>
             </div>
-            <div v-if="client.statut !== 'terminee'" class="progress-section mt-4">
-               <div class="progress-bar-container">
-                  <div class="progress-bar-fill" :style="{ width: (client.progression || 0) + '%' }"></div>
-               </div>
-               <div class="text-right text-sm text-muted mt-1">{{ client.progression || 0 }}%</div>
+            <div class="mt-4" style="text-align: center; color: var(--primary); font-weight: 500;">
+              Cliquez pour voir l'historique →
             </div>
           </div>
         </div>
@@ -49,80 +50,193 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { firebaseService } from '../../services/firebase';
+import { useRouter } from 'vue-router';
+import api from '../../services/api';
 
+const router = useRouter();
 const clients = ref([]);
 const loading = ref(true);
 
-onMounted(() => {
-  firebaseService.getClients((data) => {
-    clients.value = data;
-    loading.value = false;
-  });
+onMounted(async () => {
+  await loadClients();
 });
+
+async function loadClients() {
+  try {
+    const response = await api.get('/clients');
+    // Transformer les données pour afficher les clients avec leurs réparations en cours
+    clients.value = response.data.clients || [];
+  } catch (error) {
+    console.error('Erreur chargement clients:', error);
+  } finally {
+    loading.value = false;
+  }
+}
+
+function viewClientHistory(clientId) {
+  router.push(`/client/${clientId}/history`);
+}
 </script>
 
 <style scoped>
+.public-view {
+  min-height: calc(100vh - 64px);
+}
+
 .content {
   max-width: 1200px;
-  margin: 3rem auto;
-  padding: 0 1.5rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
 }
 
 .page-header {
   margin-bottom: 3rem;
+  padding: 3rem 2rem;
+  background: var(--primary-gradient);
+  border-radius: var(--radius-xl);
+  color: white;
+  box-shadow: 0 10px 40px rgba(24, 103, 132, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
-.text-center { text-align: center; }
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+.page-header p {
+  font-size: 1.125rem;
+  margin: 0;
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.spinner {
+  margin: 0 auto;
+}
 
 .clients-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
+  animation: fadeInUp 0.5s ease-out;
 }
 
 .client-card {
-  transition: transform 0.2s;
-  border-top: 4px solid var(--primary);
+  cursor: pointer !important;
+  transition: var(--transition-slow);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(12, 46, 61, 0.95) 0%, rgba(24, 103, 132, 0.8) 100%);
+  border: 2px solid rgba(24, 103, 132, 0.4);
+}
+
+.client-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--primary-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: var(--transition);
+}
+
+.client-card:hover::before {
+  transform: scaleX(1);
 }
 
 .client-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-xl), var(--shadow-glow-hover);
+}
+
+.client-card:active {
+  transform: translateY(-6px) scale(1.01);
 }
 
 .card-header {
   display: flex;
+  position: relative;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.client-card::after {
+  content: '\\f007';  /* FontAwesome user icon */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 3rem;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .detail-row {
   display: flex;
-  margin-bottom: 0.75rem;
-  font-size: 0.9375rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.label {
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row .label {
+  font-size: 0.875rem;
   color: var(--text-muted);
-  width: 100px;
-  flex-shrink: 0;
+  font-weight: 600;
 }
 
-.value {
-  font-weight: 500;
+.detail-row .value {
+  font-size: 0.875rem;
   color: var(--text-main);
-}
-
-.progress-bar-container {
-  height: 8px;
-  background-color: var(--bg-app);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background-color: var(--success);
-  transition: width 0.5s ease-in-out;
 }
 
 .text-right { text-align: right; }
