@@ -52,3 +52,24 @@ Ajouter des captures d’écran.
  Manuel utilisateur
 Rédiger un guide utilisateur pour l’app mobile et le dashboard web.
 Expliquer les fonctionnalités clés.
+
+1. Application Web (Front & Back)
+L'interface Web est unifiée. Lancez-la si ce n'est pas déjà fait (npm run dev dans garage-web-front/vue-project).
+
+URL : http://localhost:5173
+Frontoffice Client : C'est la page d'accueil par défaut.
+Backoffice Admin :
+Cliquez sur le lien/bouton de connexion (ou allez sur /login).
+Identifiant : admin@garage.com
+Mot de passe : password
+📱 2. Application Mobile (Techniciens)
+Vous devez lancer le serveur de développement mobile séparément.
+
+Ouvrez un nouveau terminal.
+Allez dans le dossier du mobile : cd Garage (à la racine du projet).
+Lancez la commande : npm start
+L'application s'ouvrira (généralement sur http://localhost:4200 ou 8100).
+⚙️ 3. Backend API
+Il tourne déjà en fond via Docker.
+
+URL : http://localhost:8000/api/v1
