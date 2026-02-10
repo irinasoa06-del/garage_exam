@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
-// import './assets/main.css'
+import './assets/styles.css' // Modern Design System
 
 const app = createApp(App)
 

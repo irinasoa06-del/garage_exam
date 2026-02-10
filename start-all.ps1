@@ -38,10 +38,10 @@ function Run-Step {
     Write-Host "`n=== $Message ===" -ForegroundColor Cyan
     try {
         & $Action
-        Write-Host "✔ Terminé" -ForegroundColor Green
+        Write-Host "OK Termine" -ForegroundColor Green
     }
     catch {
-        Write-Host "✖ Erreur : $_" -ForegroundColor Red
+        Write-Host "ERREUR : $_" -ForegroundColor Red
         throw
     }
 }
@@ -51,21 +51,21 @@ $backendPath = Join-Path $repoRoot "laravel-web"
 $webPath = Join-Path $repoRoot "garage-web-front\vue-project"
 $mobilePath = Join-Path $repoRoot "garage-mobile"
 
-Write-Host "=== Lancement unifié du projet Garage ===" -ForegroundColor Yellow
-Write-Host "Répertoire racine : $repoRoot"
+Write-Host "=== Lancement unifie du projet Garage ===" -ForegroundColor Yellow
+Write-Host "Repertoire racine : $repoRoot"
 
 Ensure-Command docker
 Ensure-Command npm
 
 if (-not (Test-Path $backendPath)) {
-    throw "Répertoire backend introuvable : $backendPath"
+    throw "Repertoire backend introuvable : $backendPath"
 }
 if (-not (Test-Path $webPath)) {
-    Write-Host "⚠ Frontend web introuvable : $webPath" -ForegroundColor Yellow
+    Write-Host "Frontend web introuvable : $webPath" -ForegroundColor Yellow
     $SkipWeb = $true
 }
 if (-not (Test-Path $mobilePath)) {
-    Write-Host "⚠ Application mobile introuvable : $mobilePath" -ForegroundColor Yellow
+    Write-Host "Application mobile introuvable : $mobilePath" -ForegroundColor Yellow
     $SkipMobile = $true
 }
 
@@ -75,34 +75,35 @@ if (-not $SkipBackend) {
         throw "Fichier docker compose introuvable : $composeFile"
     }
 
-    Run-Step -Message "Backend - Préparation du fichier .env" -Action {
+    Run-Step -Message "Backend - Preparation du fichier .env" -Action {
         Invoke-InDirectory -Path $backendPath -ScriptBlock {
             if (-not (Test-Path ".env")) {
                 if (Test-Path ".env.backup") {
                     Copy-Item ".env.backup" ".env"
-                    Write-Host "Fichier .env créé depuis .env.backup"
+                    Write-Host "Fichier .env cree depuis .env.backup"
                 } else {
-                    @"
-APP_NAME=Laravel
-APP_ENV=local
-APP_KEY=
-APP_DEBUG=true
-APP_URL=http://localhost:8000
-
-DB_CONNECTION=pgsql
-DB_HOST=postgres
-DB_PORT=5432
-DB_DATABASE=garage_auto
-DB_USERNAME=garage_user
-DB_PASSWORD=garage_password
-
-FIREBASE_PROJECT_ID=
-FIREBASE_CREDENTIALS=
-"@ | Out-File ".env" -Encoding UTF8 -NoNewline
-                    Write-Host "Fichier .env généré avec valeurs par défaut (à personnaliser)"
+                    $envContent = @(
+                        "APP_NAME=Laravel",
+                        "APP_ENV=local",
+                        "APP_KEY=",
+                        "APP_DEBUG=true",
+                        "APP_URL=http://localhost:8000",
+                        "",
+                        "DB_CONNECTION=pgsql",
+                        "DB_HOST=postgres",
+                        "DB_PORT=5432",
+                        "DB_DATABASE=garage_auto",
+                        "DB_USERNAME=garage_user",
+                        "DB_PASSWORD=garage_password",
+                        "",
+                        "FIREBASE_PROJECT_ID=",
+                        "FIREBASE_CREDENTIALS="
+                    ) -join "`n"
+                    $envContent | Out-File ".env" -Encoding UTF8 -NoNewline
+                    Write-Host "Fichier .env genere avec valeurs par defaut"
                 }
             } else {
-                Write-Host ".env déjà présent"
+                Write-Host ".env deja present"
             }
         }
     }
@@ -113,14 +114,14 @@ FIREBASE_CREDENTIALS=
         }
     }
 
-    Run-Step -Message "Backend - Installation des dépendances Composer" -Action {
+    Run-Step -Message "Backend - Installation des dependances Composer" -Action {
         Invoke-InDirectory -Path $backendPath -ScriptBlock {
             $vendorPath = Join-Path (Get-Location) "vendor"
             $needsInstall = $ForceInstall -or -not (Test-Path (Join-Path $vendorPath "autoload.php"))
             if ($needsInstall) {
                 docker compose -f "docker-compose-image.yml" exec laravel composer install
             } else {
-                Write-Host "Dépendances déjà installées"
+                Write-Host "Dependances deja installees"
             }
         }
     }
@@ -132,54 +133,54 @@ FIREBASE_CREDENTIALS=
     }
 }
 else {
-    Write-Host "Backend ignoré (paramètre --SkipBackend)" -ForegroundColor DarkYellow
+    Write-Host "Backend ignore (parametre --SkipBackend)" -ForegroundColor DarkYellow
 }
 
 if (-not $SkipWeb) {
-    Run-Step -Message "Frontend web - Installation des dépendances" -Action {
+    Run-Step -Message "Frontend web - Installation des dependances" -Action {
         Invoke-InDirectory -Path $webPath -ScriptBlock {
             $nodeModules = Join-Path (Get-Location) "node_modules"
             if ($ForceInstall -or -not (Test-Path $nodeModules)) {
                 npm install
             } else {
-                Write-Host "node_modules déjà présent"
+                Write-Host "node_modules deja present"
             }
         }
     }
 
-    Run-Step -Message "Frontend web - Démarrage du serveur Vite" -Action {
+    Run-Step -Message "Frontend web - Demarrage du serveur Vite" -Action {
         $command = "Set-Location `"$webPath`"; npm run dev"
         Start-Process -FilePath "powershell" -ArgumentList "-NoExit", "-Command", $command
-        Write-Host "Serveur web lancé dans une nouvelle fenêtre PowerShell"
+        Write-Host "Serveur web lance dans une nouvelle fenetre PowerShell"
     }
 }
 else {
-    Write-Host "Frontend web ignoré" -ForegroundColor DarkYellow
+    Write-Host "Frontend web ignore" -ForegroundColor DarkYellow
 }
 
 if (-not $SkipMobile) {
-    Run-Step -Message "Application mobile - Installation des dépendances" -Action {
+    Run-Step -Message "Application mobile - Installation des dependances" -Action {
         Invoke-InDirectory -Path $mobilePath -ScriptBlock {
             $nodeModules = Join-Path (Get-Location) "node_modules"
             if ($ForceInstall -or -not (Test-Path $nodeModules)) {
                 npm install
             } else {
-                Write-Host "node_modules déjà présent"
+                Write-Host "node_modules deja present"
             }
         }
     }
 
-    Run-Step -Message "Application mobile - Démarrage du serveur Ionic" -Action {
+    Run-Step -Message "Application mobile - Demarrage du serveur Ionic" -Action {
         $command = "Set-Location `"$mobilePath`"; npm run start"
         Start-Process -FilePath "powershell" -ArgumentList "-NoExit", "-Command", $command
-        Write-Host "Serveur Ionic lancé dans une nouvelle fenêtre PowerShell"
+        Write-Host "Serveur Ionic lance dans une nouvelle fenetre PowerShell"
     }
 }
 else {
-    Write-Host "Application mobile ignorée" -ForegroundColor DarkYellow
+    Write-Host "Application mobile ignoree" -ForegroundColor DarkYellow
 }
 
-Write-Host "`n=== Lancement terminé ===" -ForegroundColor Yellow
+Write-Host "`n=== Lancement termine ===" -ForegroundColor Yellow
 Write-Host "Endpoints attendus :"
 Write-Host "- API Laravel : http://localhost:8000/api/v1" -ForegroundColor Gray
 if (-not $SkipWeb) {
@@ -189,4 +190,4 @@ if (-not $SkipMobile) {
     Write-Host "- Application mobile : http://localhost:8100" -ForegroundColor Gray
 }
 
-Write-Host "Pour arrêter les conteneurs : docker compose -f laravel-web/docker-compose-image.yml down" -ForegroundColor DarkGray
+Write-Host "Pour arreter les conteneurs : docker compose -f laravel-web/docker-compose-image.yml down" -ForegroundColor DarkGray

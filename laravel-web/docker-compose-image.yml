@@ -1,0 +1,49 @@
+﻿version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: garage-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: garage_auto
+      POSTGRES_USER: garage_user
+      POSTGRES_PASSWORD: garage_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - garage-network
+
+  laravel:
+    build: .
+    image: garage-laravel
+    container_name: garage-laravel
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: garage_auto
+      DB_USERNAME: garage_user
+      DB_PASSWORD: garage_password
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8000:8000"
+    networks:
+      - garage-network
+
+networks:
+  garage-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

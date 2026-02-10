@@ -1,0 +1,148 @@
+laravel-web/
+│
+├── docker/
+│   ├── nginx/
+│   │   └── default.conf
+│   ├── php/
+│   │   └── local.ini
+│   └── postgres/
+│       └── init.sql
+│
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Api/
+│   │   │   │   ├── AuthController.php
+│   │   │   │   ├── VoitureController.php
+│   │   │   │   └── ReparationController.php
+│   │   │   └── Web/
+│   │   │       ├── DashboardController.php
+│   │   │       └── GarageController.php
+│   │   │
+│   │   └── Middleware/
+│   │       └── FirebaseMiddleware.php
+│   │
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── Voiture.php
+│   │   ├── Reparation.php
+│   │   ├── Intervention.php
+│   │   └── Notification.php
+│   │
+│   └── Helpers/
+│       └── StatistiqueHelper.php
+│
+├── database/
+│   ├── migrations/
+│   │   ├── create_users_table.php
+│   │   ├── create_voitures_table.php
+│   │   ├── create_interventions_table.php
+│   │   ├── create_reparations_table.php
+│   │   └── create_notifications_table.php
+│   │
+│   └── seeders/
+│       ├── DatabaseSeeder.php
+│       ├── UserSeeder.php
+│       └── InterventionSeeder.php
+│
+├── routes/
+│   ├── api.php
+│   └── web.php
+│
+├── config/
+│   └── firebase.php
+│
+├── docker-compose.yml
+├── Dockerfile
+├── .env
+├── composer.json
+└── README.md
+
+
+┌─────────────────────────────────────────────────────────────┐
+│                     PROJET GARAGE COMPLET                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  1. 🏢 BACKEND (VOTRE STRUCTURE ACTUELLE)                  │
+│     laravel-web/                                            │
+│     ├── API REST Laravel (PHP)                             │
+│     ├── PostgreSQL (Base de données)                       │
+│     ├── Docker (Conteneurisation)                          │
+│     └── Firebase SDK (Notifications)                       │
+│                                                             │
+│  2. 📱 FRONTEND MOBILE (À AJOUTER)                         │
+│     garage-mobile/                                         │
+│     ├── Ionic + Angular                                    │
+│     ├── Consomme l'API Laravel                            │
+│     └── Reçoit notifications Firebase                     │
+│                                                             │
+│  3. 🕹️ JEU (À AJOUTER)                                     │
+│     garage-game/                                           │
+│     ├── Godot Engine                                       │
+│     ├── Connecté à Firebase (temps réel)                   │
+│     └── Synchronisé avec le backend                       │
+│                                                             │
+│  4. 💻 FRONTEND WEB (À AJOUTER OU INTÉGRÉ)                 │
+│     garage-web-front/                                      │
+│     ├── Vue.js                                             │
+│     ├── Consomme l'API Laravel                            │
+│     └── Dashboard admin + stats                           │
+└─────────────────────────────────────────────────────────────┘
+
+# 1. Nettoyer
+docker compose -f docker-compose-fixed.yml down -v
+docker system prune -f
+
+
+Commande pour arreter tout et redemarrer tout proprement
+docker compose -f docker-compose-image.yml down
+
+# 1. Redémarrer
+docker compose -f docker-compose-image.yml restart laravel
+
+# 2. Tester
+Start-Process "http://localhost:8000"
+Start-Process "http://localhost:8000/test-db"
+
+┌─────────────┐    REST API    ┌─────────────┐
+│   Mobile    │◄───────────────┤   Laravel   │
+│   (React)   │                │   (PHP)     │
+└─────────────┘                └─────────────┘
+                                     │
+                                     │ PostgreSQL
+                                     │
+┌─────────────┐    WebSocket    ┌─────────────┐
+│     Jeu     │◄───────────────┤  Firebase   │
+│   (Godot)   │                │  Realtime   │
+└─────────────┘                └─────────────┘
+
+git config --global user.name "Irinasoa"
+git config --global user.email "irinasoa06@gmail.com"
+
+
+garage-web-front/
+├── src/
+│   ├── components/
+│   │   ├── auth/
+│   │   │   ├── LoginForm.vue
+│   │   │   └── RegisterForm.vue
+│   │   ├── voitures/
+│   │   │   ├── VoitureList.vue
+│   │   │   └── VoitureForm.vue
+│   │   └── common/
+│   │       ├── Navbar.vue
+│   │       └── Footer.vue
+│   ├── views/
+│   │   ├── LoginView.vue
+│   │   ├── DashboardView.vue
+│   │   └── AdminView.vue
+│   ├── services/
+│   │   └── api.js
+│   └── router/
+│       └── index.js
+
+conteneur laravel
+docker compose -f docker-compose-image.yml exec laravel bash
+
+C:\Users\USER\Documents\MrRojo\ProjetFinalS5\Examen_garage\laravel-web\resources\views\test.blade.php
+C:\Users\USER\Documents\MrRojo\ProjetFinalS5\Examen_garage\laravel-web\artisan

@@ -1,18 +1,34 @@
 <template>
-  <div class="login-container">
-    <h1>Espace Garage</h1>
-    <form @submit.prevent="login">
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" v-model="email" required placeholder="admin@garage.com">
+  <div class="login-page">
+    <div class="card login-card">
+      <div class="login-header">
+        <h1>Espace Garage</h1>
+        <p class="text-muted">Connectez-vous pour gérer votre atelier</p>
       </div>
-      <div class="form-group">
-        <label>Mot de passe</label>
-        <input type="password" v-model="password" required placeholder="admin123">
+
+      <form @submit.prevent="login">
+        <div class="form-group">
+          <label>Adresse Email</label>
+          <input type="email" v-model="email" required placeholder="admin@garage.com">
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" v-model="password" required placeholder="••••••••">
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block" :disabled="loading">
+          {{ loading ? 'Connexion en cours...' : 'Se connecter' }}
+        </button>
+      </form>
+
+      <div v-if="error" class="error-badge">
+        {{ error }}
       </div>
-      <button type="submit">Se connecter</button>
-    </form>
-    <p v-if="error" class="error">{{ error }}</p>
+      
+      <div class="login-footer">
+        <router-link to="/" class="text-sm">Retour à l'accueil</router-link>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,68 +40,106 @@ import api from '../services/api';
 const email = ref('');
 const password = ref('');
 const error = ref('');
+const loading = ref(false);
 const router = useRouter();
 
 async function login() {
+  error.value = '';
+  loading.value = true;
   try {
     const response = await api.post('login', {
       email: email.value,
       password: password.value
     });
     
-    // Auth success
-    if (response.data && response.data.token && response.data.user) {
-      localStorage.setItem('auth_token', response.data.token);
-      const user = response.data.user;
-      localStorage.setItem('user_role', user.role || 'client');
-
-      if (user.role === 'admin') {
+    let data = response.data;
+    if (typeof data === 'string') {
+      data = data.replace(/^\uFEFF/, '').replace(/^[\s\u200B-\u200D\uFEFF]+/, '').trim();
+      try {
+        data = JSON.parse(data);
+      } catch (e) {
+        throw new Error('Erreur de formatage serveur');
+      }
+    }
+    
+    if (data && data.token && data.user) {
+      localStorage.setItem('auth_token', data.token);
+      localStorage.setItem('isAdmin', data.user.role === 'admin' ? 'true' : 'false');
+      
+      if (data.user.role === 'admin') {
         router.push('/admin/dashboard');
       } else {
         router.push('/');
       }
     } else {
-      console.error('Invalid response structure:', response.data);
-      error.value = 'Réponse du serveur invalide';
+      error.value = 'Réponse invalide du serveur';
     }
     
   } catch (err) {
     console.error('Login Error:', err);
-    error.value = err.response?.data?.message || err.message || 'Erreur de connexion';
+    error.value = err.response?.data?.message || err.message || 'Identifiants incorrects';
+  } finally {
+    loading.value = false;
   }
 }
 </script>
 
 <style scoped>
-.login-container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-app);
 }
-.form-group {
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.brand-icon {
+  font-size: 3rem;
+  display: block;
   margin-bottom: 1rem;
 }
-label {
-  display: block;
+
+.login-header h1 {
   margin-bottom: 0.5rem;
+  font-size: 1.5rem;
 }
-input {
+
+.btn-block {
   width: 100%;
-  padding: 0.5rem;
+  margin-top: 1.5rem;
+  height: 46px;
+  font-size: 1rem;
 }
-button {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: #2c3e50;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-.error {
-  color: red;
-  margin-top: 1rem;
+
+.error-badge {
+  background-color: #fee2e2;
+  color: var(--danger);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
   text-align: center;
+  border: 1px solid #fecaca;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.login-footer a {
+  color: var(--primary);
+  text-decoration: none;
 }
 </style>

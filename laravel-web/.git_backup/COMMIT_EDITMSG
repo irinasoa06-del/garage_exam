@@ -1,0 +1,66 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Changes to be committed:
+#	modified:   Dockerfile
+#	new file:   README.md
+#	new file:   app/Http/Controllers/Api/AuthController.php
+#	new file:   app/Http/Controllers/Api/CommandeController.php
+#	new file:   app/Http/Controllers/Api/InterventionController.php
+#	new file:   app/Http/Controllers/Api/NotificationController.php
+#	new file:   app/Http/Controllers/Api/ReparationController.php
+#	new file:   app/Http/Controllers/Api/StatistiqueController.php
+#	new file:   app/Http/Controllers/Api/TestController.php
+#	new file:   app/Http/Controllers/Api/VoitureController.php
+#	new file:   app/Http/Controllers/Controller.php
+#	modified:   app/Http/Kernel.php
+#	modified:   app/Http/Middleware/Authenticate.php
+#	modified:   app/Http/Middleware/EncryptCookies.php
+#	modified:   app/Http/Middleware/PreventRequestsDuringMaintenance.php
+#	modified:   app/Http/Middleware/RedirectIfAuthenticated.php
+#	modified:   app/Http/Middleware/TrimStrings.php
+#	modified:   app/Http/Middleware/TrustProxies.php
+#	modified:   app/Http/Middleware/VerifyCsrfToken.php
+#	modified:   app/Models/ReparationEnCours.php
+#	modified:   app/Models/TypeIntervention.php
+#	modified:   app/Models/User.php
+#	modified:   app/Providers/RouteServiceProvider.php
+#	new file:   app/Providers/RouteServiceProvider.php.backup
+#	new file:   app/Services/FirebaseSyncService.php
+#	new file:   clean_bom.php
+#	modified:   composer.json
+#	modified:   composer.lock
+#	new file:   config/auth.php
+#	new file:   config/cache.php
+#	new file:   config/cors.php
+#	new file:   config/database.php
+#	new file:   config/filesystems.php
+#	new file:   config/firebase.php
+#	new file:   config/sanctum.php
+#	new file:   config/session.php
+#	new file:   config/view.php
+#	new file:   database/factories/TypeInterventionFactory.php
+#	new file:   database/factories/UserFactory.php
+#	new file:   database/factories/VoitureFactory.php
+#	modified:   database/migrations/2024_01_01_000002_create_voitures_table.php
+#	modified:   database/migrations/2024_01_01_000004_create_interventions_table.php
+#	modified:   database/migrations/2024_01_01_000005_create_reparations_en_cours_table.php
+#	modified:   database/migrations/2024_01_01_000006_create_commandes_table.php
+#	modified:   database/migrations/2024_01_01_000007_create_commande_details_table.php
+#	modified:   database/migrations/2024_01_01_000008_create_notifications_table.php
+#	modified:   database/seeders/DatabaseSeeder.php
+#	modified:   docker-compose-image.yml
+#	new file:   firebase_credentials.json
+#	new file:   index.php
+#	modified:   public/index.php
+#	new file:   resources/views/test.blade.php
+#	modified:   routes/api.php
+#	modified:   routes/web.php
+#	deleted:    schema2.sql
+#	modified:   structure
+#	new file:   tests/Feature/AuthControllerTest.php
+#	new file:   tests/Feature/InterventionControllerTest.php
+#	new file:   tests/Feature/VoitureControllerTest.php
+#

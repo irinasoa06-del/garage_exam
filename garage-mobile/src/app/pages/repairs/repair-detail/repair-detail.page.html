@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/repairs"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Détails Réparation</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="reparation">
+    <!-- Carte principale -->
+    <ion-card>
+      <ion-card-header>
+        <div class="repair-main-header">
+          <ion-icon name="construct" size="large" [color]="getStatutColor(reparation.statut)"></ion-icon>
+          <div>
+            <ion-card-title>{{ reparation.type_intervention.nom }}</ion-card-title>
+            <ion-card-subtitle>{{ reparation.type_intervention.description }}</ion-card-subtitle>
+          </div>
+          <ion-badge [color]="getStatutColor(reparation.statut)">
+            {{ getStatutLabel(reparation.statut) }}
+          </ion-badge>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Progression -->
+        <div class="progress-section" *ngIf="reparation.statut === 'en_cours'">
+          <h3>Progression</h3>
+          <ion-progress-bar [value]="reparation.progression / 100" [color]="getStatutColor(reparation.statut)">
+          </ion-progress-bar>
+          <p class="progression-value">{{ reparation.progression }}%</p>
+        </div>
+
+        <!-- Informations -->
+        <div class="info-section">
+          <h3>Informations</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <ion-icon name="time-outline"></ion-icon>
+              <div>
+                <p class="label">Durée estimée</p>
+                <p class="value">{{ formatDuree(reparation.type_intervention.duree_secondes || 0) }}</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <ion-icon name="cash-outline"></ion-icon>
+              <div>
+                <p class="label">Prix</p>
+                <p class="value">{{ reparation.type_intervention.prix_unitaire }} Ar</p>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="reparation.slot_garage">
+              <ion-icon name="location-outline"></ion-icon>
+              <div>
+                <p class="label">Slot garage</p>
+                <p class="value">Slot {{ reparation.slot_garage }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Carte voiture -->
+    <ion-card button (click)="voirVoiture()">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="car-sport"></ion-icon>
+          Véhicule concerné
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="car-info">
+          <div>
+            <h3>{{ reparation.voiture.marque }} {{ reparation.voiture.modele }}</h3>
+            <p>{{ reparation.voiture.immatriculation }}</p>
+          </div>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Messages de statut -->
+    <ion-card *ngIf="reparation.statut === 'en_attente'" color="warning">
+      <ion-card-content>
+        <div class="status-message">
+          <ion-icon name="time"></ion-icon>
+          <p>Cette réparation est en attente d'un slot disponible</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="reparation.statut === 'en_cours'" color="primary">
+      <ion-card-content>
+        <div class="status-message">
+          <ion-icon name="construct"></ion-icon>
+          <p>Réparation en cours. Vous serez notifié une fois terminée.</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="reparation.statut === 'terminee'" color="success">
+      <ion-card-content>
+        <div class="status-message">
+          <ion-icon name="checkmark-circle"></ion-icon>
+          <p>Réparation terminée ! Vous pouvez récupérer votre véhicule après paiement.</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

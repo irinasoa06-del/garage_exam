@@ -122,7 +122,9 @@ export default {
     async loadInterventions() {
       try {
         const response = await fetch('/api/interventions');
-        this.interventions = await response.json();
+        const data = await response.json();
+        // Handle { interventions: [...] } structure
+        this.interventions = data.interventions || data.data || data || [];
       } catch (error) {
         console.error('Erreur chargement:', error);
       }
@@ -160,6 +162,9 @@ export default {
           this.showAddForm = false;
           this.resetForm();
           await this.loadInterventions();
+        } else {
+             const errorData = await response.json();
+             alert(errorData.message || "Erreur lors de l'ajout");
         }
       } catch (error) {
         console.error('Erreur ajout:', error);

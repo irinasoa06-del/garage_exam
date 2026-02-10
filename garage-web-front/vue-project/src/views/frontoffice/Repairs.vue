@@ -9,7 +9,6 @@
       </div>
       <div class="header-stats">
         <div class="stat-badge">
-          <span class="stat-icon">🚗</span>
           <span class="stat-text">{{ activeRepairs }} voitures en réparation</span>
         </div>
         <div class="stat-badge">

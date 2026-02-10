@@ -1,0 +1,17 @@
+# Ionic/Angular
+node_modules/
+www/
+platforms/
+plugins/
+.ionic/
+.angular/
+.sourcemaps/
+.sass-cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/

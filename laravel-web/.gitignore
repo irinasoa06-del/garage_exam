@@ -1,0 +1,47 @@
+# =========================
+# Laravel
+# =========================
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+/storage/logs
+*.log
+
+# Cache & compiled files
+/bootstrap/cache
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/views
+
+# PHPUnit
+.phpunit.result.cache
+
+# Vite / Mix
+/public/hot
+/public/build
+
+# IDE / Editors
+/.idea
+/.vscode
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Composer
+/composer.phar
+
+# =========================
+# Misc
+# =========================
+*.swp
+*.swo

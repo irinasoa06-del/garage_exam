@@ -1,44 +1,59 @@
 <template>
   <div class="admin-view">
-    <NavBar />
     <div class="content">
-      <h1>Gestion des Interventions</h1>
+      <div class="page-header">
+        <h1>Gestion des Interventions</h1>
+      </div>
       
       <!-- Formulaire Ajout -->
-      <div class="add-form">
-        <h3>Ajouter une intervention</h3>
+      <div class="card add-form mb-4">
+        <h3 class="mb-4">Ajouter une intervention</h3>
         <form @submit.prevent="addIntervention">
           <div class="form-row">
-            <input v-model="newIntervention.nom" placeholder="Nom (ex: Vidange)" required>
-            <input v-model.number="newIntervention.prix" type="number" placeholder="Prix (€)" required>
-            <input v-model.number="newIntervention.duree" type="number" placeholder="Durée (secondes)" required>
-            <button type="submit">Ajouter</button>
+            <div class="form-group flex-1">
+              <label>Nom de l'intervention</label>
+              <input v-model="newIntervention.nom" placeholder="ex: Vidange complète" required>
+            </div>
+            <div class="form-group" style="width: 150px;">
+              <label>Prix (Ar)</label>
+              <input v-model.number="newIntervention.prix_unitaire" type="number" placeholder="0" required>
+            </div>
+            <div class="form-group" style="width: 150px;">
+              <label>Durée (s)</label>
+              <input v-model.number="newIntervention.duree_secondes" type="number" placeholder="3600" required>
+            </div>
+            <div class="form-group flex items-end">
+              <button type="submit" class="btn btn-primary" style="height: 42px;">Ajouter</button>
+            </div>
           </div>
         </form>
       </div>
 
       <!-- Liste -->
-      <div class="list-container">
+      <div class="card table-container">
         <table>
           <thead>
             <tr>
               <th>Nom</th>
-              <th>Prix</th>
-              <th>Durée</th>
-              <th>Actions</th>
+              <th>Prix unitaire</th>
+              <th>Durée estimée</th>
+              <th style="text-align: right;">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in interventions" :key="item.id">
-              <td>{{ item.nom }}</td>
-              <td>{{ item.prix }} €</td>
-              <td>{{ item.duree }} s</td>
-              <td>
-                <button @click="deleteItem(item.id)" class="delete-btn">Supprimer</button>
+            <tr v-for="item in interventions" :key="item.type_id">
+              <td style="font-weight: 500;">{{ item.nom }}</td>
+              <td><span class="badge info">{{ item.prix_unitaire }} Ar</span></td>
+              <td><span class="text-muted">{{ (item.duree_secondes / 3600).toFixed(1) }} h</span> <small class="text-muted">({{ item.duree_secondes }}s)</small></td>
+              <td style="text-align: right;">
+                <button @click="deleteItem(item.type_id)" class="btn btn-danger btn-sm">Supprimer</button>
               </td>
             </tr>
           </tbody>
         </table>
+        <div v-if="interventions.length === 0" style="padding: 3rem; text-align: center; color: var(--text-muted);">
+          Aucun type d'intervention enregistré
+        </div>
       </div>
     </div>
   </div>
@@ -46,22 +61,29 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import NavBar from '../../components/NavBar.vue';
-import { firebaseService } from '../../services/firebase';
+import api from '../../services/api';
 
 const interventions = ref([]);
-const newIntervention = ref({ nom: '', prix: '', duree: '' });
+const newIntervention = ref({ nom: '', prix_unitaire: '', duree_secondes: '' });
 
 onMounted(() => {
-  firebaseService.getInterventions((data) => {
-    interventions.value = data;
-  });
+  loadInterventions();
 });
+
+async function loadInterventions() {
+  try {
+    const response = await api.get('/types-intervention-manage');
+    interventions.value = response.data.types || [];
+  } catch (e) {
+    console.error("Erreur chargement", e);
+  }
+}
 
 async function addIntervention() {
   try {
-    await firebaseService.addIntervention({ ...newIntervention.value });
-    newIntervention.value = { nom: '', prix: '', duree: '' }; // Reset
+    await api.post('/types-intervention-manage', newIntervention.value);
+    newIntervention.value = { nom: '', prix_unitaire: '', duree_secondes: '' }; // Reset
+    loadInterventions();
   } catch (e) {
     console.error("Erreur ajout", e);
     alert("Erreur lors de l'ajout");
@@ -71,7 +93,8 @@ async function addIntervention() {
 async function deleteItem(id) {
   if (confirm('Supprimer cette intervention ?')) {
     try {
-      await firebaseService.deleteIntervention(id);
+      await api.delete(`/types-intervention-manage/${id}`);
+      loadInterventions();
     } catch (e) {
       console.error("Erreur suppression", e);
     }
@@ -82,42 +105,27 @@ async function deleteItem(id) {
 <style scoped>
 .content {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
 }
-.add-form {
-  background: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 8px;
+
+.page-header {
   margin-bottom: 2rem;
 }
+
+.add-form {
+  border-left: 4px solid var(--primary);
+}
+
 .form-row {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
-input {
-  padding: 0.5rem;
+
+.flex-1 {
   flex: 1;
-}
-button {
-  padding: 0.5rem 1rem;
-  background-color: #27ae60;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-.delete-btn {
-  background-color: #e74c3c;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.9rem;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-th, td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #eee;
+  min-width: 250px;
 }
 </style>

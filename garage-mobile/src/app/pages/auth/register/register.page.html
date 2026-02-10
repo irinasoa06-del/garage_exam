@@ -1,0 +1,86 @@
+<ion-content class="ion-padding">
+  <div class="register-container">
+    <div class="logo-section">
+      <ion-img src="/assets/images/logo.png" alt="Garage Logo"></ion-img>
+      <h1>Mon Garage</h1>
+      <p>Créez votre compte</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()" class="form-section">
+      <!-- Nom -->
+      <ion-item lines="full">
+        <ion-input label="Nom *" label-placement="floating" type="text" formControlName="nom" required></ion-input>
+      </ion-item>
+
+      <div class="error-message" *ngIf="isSubmitted && errorControl['nom'].errors">
+        <span *ngIf="errorControl['nom'].errors['required']">Le nom est requis</span>
+        <span *ngIf="errorControl['nom'].errors['minlength']">Minimum 2 caractères</span>
+      </div>
+
+      <!-- Prénom -->
+      <ion-item lines="full">
+        <ion-input label="Prénom *" label-placement="floating" type="text" formControlName="prenom"
+          required></ion-input>
+      </ion-item>
+
+      <div class="error-message" *ngIf="isSubmitted && errorControl['prenom'].errors">
+        <span *ngIf="errorControl['prenom'].errors['required']">Le prénom est requis</span>
+        <span *ngIf="errorControl['prenom'].errors['minlength']">Minimum 2 caractères</span>
+      </div>
+
+      <!-- Email -->
+      <ion-item lines="full">
+        <ion-input label="Email *" label-placement="floating" type="email" formControlName="email" required></ion-input>
+      </ion-item>
+
+      <div class="error-message" *ngIf="isSubmitted && errorControl['email'].errors">
+        <span *ngIf="errorControl['email'].errors['required']">L'email est requis</span>
+        <span *ngIf="errorControl['email'].errors['email']">Format d'email invalide</span>
+      </div>
+
+      <!-- Téléphone (optionnel) -->
+      <ion-item lines="full">
+        <ion-input label="Téléphone" label-placement="floating" type="tel" formControlName="telephone"></ion-input>
+      </ion-item>
+
+      <div class="error-message" *ngIf="isSubmitted && errorControl['telephone'].errors">
+        <span *ngIf="errorControl['telephone'].errors['pattern']">Format invalide (10 chiffres)</span>
+      </div>
+
+      <!-- Mot de passe -->
+      <ion-item lines="full">
+        <ion-input label="Mot de passe *" label-placement="floating" type="password" formControlName="mot_de_passe"
+          required></ion-input>
+      </ion-item>
+
+      <div class="error-message" *ngIf="isSubmitted && errorControl['mot_de_passe'].errors">
+        <span *ngIf="errorControl['mot_de_passe'].errors['required']">Le mot de passe est requis</span>
+        <span *ngIf="errorControl['mot_de_passe'].errors['minlength']">Minimum 6 caractères</span>
+      </div>
+
+      <!-- Confirmation mot de passe -->
+      <ion-item lines="full">
+        <ion-input label="Confirmer le mot de passe *" label-placement="floating" type="password"
+          formControlName="confirmer_mot_de_passe" required></ion-input>
+      </ion-item>
+
+      <div class="error-message" *ngIf="isSubmitted && errorControl['confirmer_mot_de_passe'].errors">
+        <span *ngIf="errorControl['confirmer_mot_de_passe'].errors['required']">Veuillez confirmer le mot de
+          passe</span>
+        <span *ngIf="errorControl['confirmer_mot_de_passe'].errors['passwordMismatch']">Les mots de passe ne
+          correspondent pas</span>
+      </div>
+
+      <ion-button expand="block" type="submit" class="register-button">
+        S'inscrire
+      </ion-button>
+
+      <div class="login-link">
+        <p>Vous avez déjà un compte ?</p>
+        <ion-button expand="block" fill="outline" (click)="goToLogin()">
+          Se connecter
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

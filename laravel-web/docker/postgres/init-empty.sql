@@ -1,0 +1,2 @@
+-- Fichier d'initialisation temporaire 
+-- Les tables seront cr‚‚es par Laravel via les migrations 
